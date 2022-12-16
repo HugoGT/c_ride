@@ -8,9 +8,12 @@ from django.contrib import admin
 
 urlpatterns = [
     # Django Admin
-    path(settings.ADMIN_URL, admin.site.urls),
+    path('admin/', admin.site.urls),
 
-    path('', include(('cride.circles.urls', 'users'), namespace= 'users')),
-    path('', include(('cride.circles.urls', 'circles'), namespace= 'circles')),
+    #Users views
+    path('', include(('cride.users.urls', 'users'), namespace='users')),
+
+    #Circles views
+    path('', include(('cride.circles.urls', 'circles'), namespace='circles')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

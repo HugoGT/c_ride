@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from cride.circles.models import Circle
-from cride.circles.serializers import CircleSerializer, CreateCircleSerializer
+from cride.serializers import CircleSerializer, CreateCircleSerializer
 
 
 @api_view(['GET'])

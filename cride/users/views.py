@@ -12,6 +12,19 @@ from cride.serializers import (
     )
 
 
+class UserSignupAPIView(APIView):
+    """User sign up API view"""
+
+    def post(self, request, *args, **kwargs):
+        """Handle HTTP POST request"""
+        serializer = UserSignupSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = UserModelSerializer(user).data
+
+        return Response(data, status=status.HTTP_201_CREATED)
+
+
 class UserLoginAPIView(APIView):
     """User login API view"""
 
@@ -24,18 +37,5 @@ class UserLoginAPIView(APIView):
             'user': UserModelSerializer(user).data,
             'access_token': token,
         }
-
-        return Response(data, status=status.HTTP_201_CREATED)
-
-
-class UserSignupAPIView(APIView):
-    """User sign up API view"""
-
-    def post(self, request, *args, **kwargs):
-        """Handle HTTP POST request"""
-        serializer = UserSignupSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        data = UserModelSerializer(user).data
 
         return Response(data, status=status.HTTP_201_CREATED)

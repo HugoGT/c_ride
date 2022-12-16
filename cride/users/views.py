@@ -9,6 +9,7 @@ from cride.serializers import (
     UserModelSerializer,
     UserLoginSerializer,
     UserSignupSerializer,
+    UserVerificationSerializer
     )
 
 
@@ -39,3 +40,15 @@ class UserLoginAPIView(APIView):
         }
 
         return Response(data, status=status.HTTP_201_CREATED)
+
+
+class UserVerifyAPIView(APIView):
+    """Account verify view"""
+
+    def post(self, request, *args, **kwargs):
+        """Handle HTTP POST request"""
+        serializer = UserVerificationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response({'message': 'Congratulation, now go share some rides!'}, status=status.HTTP_200_OK)

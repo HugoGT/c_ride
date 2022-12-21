@@ -12,3 +12,10 @@ class CircleViewSet(viewsets.ModelViewSet):
 
     queryset = Circle.objects.all()
     serializer_class = CircleModelSerializer
+
+    def get_queryset(self):
+        """Only lists public circles"""
+        queryset = Circle.objects.all()
+        if self.action == 'list':
+            return queryset.filter(is_public=True)
+        return queryset

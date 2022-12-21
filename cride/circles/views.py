@@ -1,27 +1,14 @@
 """Circles views"""
 
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework import viewsets
 
 from cride.circles.models import Circle
-from cride.serializers import CircleSerializer, CreateCircleSerializer
+from cride.serializers import CircleModelSerializer
 
 
-@api_view(['GET'])
-def list_circles(request):
-    """List circles"""
-    circles = Circle.objects.all().filter(is_public=True)
-    serializer = CircleSerializer(circles, many=True)
+class CircleViewSet(viewsets.ModelViewSet):
+    """Circle view set"""
 
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-def create_circle(request):
-    """Create a circle"""
-    serializer = CreateCircleSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    circle = serializer.save()
-
-    return Response(CircleSerializer(circle).data)
+    queryset = Circle.objects.all()
+    serializer_class = CircleModelSerializer

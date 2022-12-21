@@ -2,36 +2,24 @@
 
 
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 
 from cride.circles.models import Circle
 
 
-class CircleSerializer(serializers.Serializer):
-    """Circle serializer"""
+class CircleModelSerializer(serializers.ModelSerializer):
+    """Circle model serializer"""
 
-    name = serializers.CharField()
-    slug_name = serializers.SlugField()
-    rides_taken = serializers.IntegerField()
-    rides_offered = serializers.IntegerField()
-    members_limit = serializers.IntegerField()
-
-
-class CreateCircleSerializer(serializers.Serializer):
-    """Create circle serializer"""
-
-    name = serializers.CharField(max_length=120)
-    slug_name = serializers.SlugField(
-        max_length=40,
-        validators=[
-            UniqueValidator(queryset=Circle.objects.all())
-            ]
+    class Meta:
+        model = Circle
+        fields = (
+            'name',
+            'slug_name',
+            'rides_taken',
+            'rides_offered',
+            'members_limit',
+            'is_limited',
+            'is_public',
+            'verified',
+            'picture',
+            'about',
         )
-    about = serializers.CharField(
-        max_length=256,
-        required=False
-        )
-
-    def create(self, data):
-        """Create circle"""
-        return Circle.objects.create(**data)

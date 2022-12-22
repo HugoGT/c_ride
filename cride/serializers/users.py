@@ -86,7 +86,7 @@ class UserSignupSerializer(serializers.Serializer):
     def create(self, data):
         """Handle user and profile creation"""
         data.pop('password_confirmation')
-        user = User.objects.create(**data, is_verified=True) # is_verified = changes to True in production
+        user = User.objects.create(**data, is_verified=True) # is_verified = changes to False in production
         Profile.objects.create(user=user)
 
         return user
@@ -155,11 +155,7 @@ class UserVerificationSerializer(serializers.Serializer):
     Receives a token and decode it to verify the user's account.
     """
 
-    token = serializers.CharField(
-        validators=[
-
-        ]
-    )
+    token = serializers.CharField()
 
     def validate_token(self, data):
         """Verify token"""

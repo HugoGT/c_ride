@@ -1,9 +1,9 @@
 """Users views"""
 
 
-from rest_framework import status
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from cride.serializers import (
     UserModelSerializer,
@@ -13,11 +13,15 @@ from cride.serializers import (
     )
 
 
-class UserSignupAPIView(APIView):
-    """User sign up API view"""
+class UserViewSet(viewsets.GenericViewSet):
+    """User view set
 
-    def post(self, request, *args, **kwargs):
-        """Handle HTTP POST request"""
+    Handle sign up, login and account  verification
+    """
+
+    @action(detail=False, methods=['post'])
+    def signup(self, request):
+        """User sign up"""
         serializer = UserSignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -25,12 +29,9 @@ class UserSignupAPIView(APIView):
 
         return Response(data, status=status.HTTP_201_CREATED)
 
-
-class UserLoginAPIView(APIView):
-    """User login API view"""
-
-    def post(self, request, *args, **kwargs):
-        """Handle HTTP POST request"""
+    @action(detail=False, methods=['post'])
+    def login(self, request):
+        """User login"""
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
@@ -41,14 +42,14 @@ class UserLoginAPIView(APIView):
 
         return Response(data, status=status.HTTP_201_CREATED)
 
-
-class UserVerifyAPIView(APIView):
-    """Account verify view"""
-
-    def post(self, request, *args, **kwargs):
-        """Handle HTTP POST request"""
+    @action(detail=False, methods=['post'])
+    def verify(self, request):
+        """Verify user sign up token"""
         serializer = UserVerificationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response({'message': 'Congratulation, now go share some rides!'}, status=status.HTTP_200_OK)
+        return Response(
+            {'message': 'Congratulation, now go share some rides!'},
+            status=status.HTTP_200_OK
+            )

@@ -1,17 +1,15 @@
 """Circles URLs module"""
 
 
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-from cride.users.views import (
-    UserLoginAPIView,
-    UserSignupAPIView,
-    UserVerifyAPIView,
-    )
+from .views import UserViewSet
 
+
+router = DefaultRouter()
+router.register(r'', UserViewSet, basename='users')
 
 urlpatterns = [
-    path('signup', UserSignupAPIView.as_view(), name='signup'),
-    path('verify', UserVerifyAPIView.as_view(), name='verify'),
-    path('login', UserLoginAPIView.as_view(), name='login'),
+    path('', include(router.urls))
 ]

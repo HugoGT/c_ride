@@ -13,6 +13,7 @@ from cride.serializers import CircleModelSerializer
 class CircleViewSet(viewsets.ModelViewSet):
     """Circle view set"""
 
+    lookup_field = 'slug_name'
     serializer_class = CircleModelSerializer
 
     def get_queryset(self):

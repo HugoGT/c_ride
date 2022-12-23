@@ -15,10 +15,13 @@ from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
 from cride.users.models import User, Profile
+from .profiles import ProfileModelSerializer
 
 
 class UserModelSerializer(serializers.ModelSerializer):
     """User model serializer"""
+
+    profile = ProfileModelSerializer(read_only=True)
 
     class Meta:
         model = User
@@ -27,7 +30,8 @@ class UserModelSerializer(serializers.ModelSerializer):
             'username',
             'last_name',
             'first_name',
-            'phone_number'
+            'phone_number',
+            'profile'
         )
 
 

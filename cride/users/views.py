@@ -14,11 +14,16 @@ from cride.serializers import (
     )
 
 from cride.circles.models import Circle
-from cride.serializers import CircleModelSerializer
+from cride.serializers import CircleModelSerializer, ProfileModelSerializer
 from cride.users.models import User
+from cride.users.permissions import IsAccountOwner
 
 
-class UserViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class UserViewSet(
+    viewsets.GenericViewSet,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin
+    ):
     """User view set
 
     Handle user details. A user can only see his own details.
@@ -30,7 +35,10 @@ class UserViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
     def get_permissions(self):
         """Assign permissions"""
-        permissions = [IsAuthenticated()]
+        if self.action == 'retrieve':
+            permissions = [IsAuthenticated()]
+        else:
+            permissions = [IsAuthenticated(), IsAccountOwner()]
 
         return permissions
 
@@ -50,6 +58,22 @@ class UserViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
         return response
 
+    @action(detail=True, methods=['put', 'patch'])
+    def profile(self, request, *args, **kwargs):
+        """Update profile data"""
+        user = self.get_object()
+        profile = user.profile
+        partial = request.method == 'PATCH'
+        serializer = ProfileModelSerializer(
+            profile,
+            data=request.data,
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        data = UserModelSerializer(user).data
+
+        return Response(data)
 
 class AuthViewSet(viewsets.GenericViewSet):
     """Auth view set

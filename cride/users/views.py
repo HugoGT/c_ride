@@ -1,9 +1,10 @@
 """Users views"""
 
 
-from rest_framework import status, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from cride.serializers import (
     UserModelSerializer,
@@ -12,9 +13,46 @@ from cride.serializers import (
     UserVerificationSerializer
     )
 
+from cride.circles.models import Circle
+from cride.serializers import CircleModelSerializer
+from cride.users.models import User
 
-class UserViewSet(viewsets.GenericViewSet):
+
+class UserViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     """User view set
+
+    Handle user details. A user can only see his own details.
+    """
+
+    queryset = User.objects.filter(is_active=True, is_client=True)
+    serializer_class = UserModelSerializer
+    lookup_field = 'username'
+
+    def get_permissions(self):
+        """Assign permissions"""
+        permissions = [IsAuthenticated()]
+
+        return permissions
+
+    def retrieve(self, request, *args, **kwargs):
+        """Add extra data to the response"""
+        response = super().retrieve(request, *args, **kwargs)
+        circles = Circle.objects.filter(
+            is_public = True,
+            members=request.user,
+            membership__is_active=True
+        )
+        data = {
+            'user': response.data,
+            'circles': CircleModelSerializer(circles, many=True).data
+        }
+        response.data = data
+
+        return response
+
+
+class AuthViewSet(viewsets.GenericViewSet):
+    """Auth view set
 
     Handle sign up, login and account  verification
     """

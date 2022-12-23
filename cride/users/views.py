@@ -38,13 +38,13 @@ class UserViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         """Add extra data to the response"""
         response = super().retrieve(request, *args, **kwargs)
         circles = Circle.objects.filter(
-            is_public = True,
             members=request.user,
             membership__is_active=True
         )
         data = {
             'user': response.data,
-            'circles': CircleModelSerializer(circles, many=True).data
+            'belongs_to': str(circles.count()) + ' circles',
+            'circles_member': CircleModelSerializer(circles.filter(is_public=True), many=True).data
         }
         response.data = data
 

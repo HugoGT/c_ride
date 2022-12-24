@@ -3,11 +3,12 @@
 
 from rest_framework import viewsets
 from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 
 from cride.circles.models import Circle, Membership
 from cride.circles.permissions import IsCircleAdmin
-from cride.serializers import CircleModelSerializer
+from cride.serializers import CircleModelSerializer, MembershipModelSerializer
 
 
 class CircleViewSet(viewsets.ModelViewSet):
@@ -46,3 +47,23 @@ class CircleViewSet(viewsets.ModelViewSet):
         if self.action in ['update', 'partial_update']:
             permissions.append(IsCircleAdmin)
         return [permission() for permission in permissions]
+
+
+class MembershipViewSet(viewsets.ModelViewSet):
+    """Circle membership viewset"""
+
+    serializer_class = MembershipModelSerializer
+
+    def dispatch(self, request, *args, **kwargs):
+        """Verify that the circle exists"""
+        slug_name = kwargs['slug_name']
+        self.circle = get_object_or_404(Circle, slug_name=slug_name)
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        """Return circle members"""
+        return Membership.objects.filter(
+            circle=self.circle,
+            is_active=True
+        )

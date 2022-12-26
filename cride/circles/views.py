@@ -7,7 +7,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 
 from cride.circles.models import Circle, Membership
-from cride.circles.permissions import IsCircleAdmin
+from cride.circles.permissions import IsCircleAdmin, IsActiveCircleMember
 from cride.serializers import CircleModelSerializer, MembershipModelSerializer
 
 
@@ -37,7 +37,7 @@ class CircleViewSet(viewsets.ModelViewSet):
             remaining_invitations=10
         )
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, slug_name=None):
         """No one can delete a circle"""
         raise MethodNotAllowed('DELETE')
 
@@ -61,9 +61,28 @@ class MembershipViewSet(viewsets.ModelViewSet):
 
         return super().dispatch(request, *args, **kwargs)
 
+    def perform_destroy(self, instance):
+        """Disable membership"""
+        instance.is_active = False
+        instance.save()
+
+    def get_permissions(self):
+        """Assign permissions based on action"""
+        permissions = [IsAuthenticated, IsActiveCircleMember]
+        return [permission() for permission in permissions]
+
     def get_queryset(self):
         """Return circle members"""
         return Membership.objects.filter(
+            circle=self.circle,
+            is_active=True
+        )
+
+    def get_object(self):
+        """Return the circle member by using the user's username"""
+        return get_object_or_404(
+            Membership,
+            user__username=self.kwargs['pk'],
             circle=self.circle,
             is_active=True
         )

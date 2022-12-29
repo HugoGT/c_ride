@@ -1,7 +1,7 @@
 """Circles views"""
 
 
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.generics import get_object_or_404
@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from cride.circles.models import Circle, Invitation, Membership
 from cride.circles.permissions import IsActiveCircleMember, IsCircleAdmin, IsSelfMember
-from cride.serializers import CircleModelSerializer, MembershipModelSerializer
+from cride.serializers import AddMemberSerializer, CircleModelSerializer, MembershipModelSerializer
 
 
 class CircleViewSet(viewsets.ModelViewSet):
@@ -65,6 +65,18 @@ class MembershipViewSet(viewsets.ModelViewSet):
 
         return super().dispatch(request, *args, **kwargs)
 
+    def create(self, request, *args, **kwargs):
+        """Handle member creation from invitation code."""
+        serializer = AddMemberSerializer(
+            data=request.data,
+            context={'circle': self.circle, 'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        member = serializer.save()
+        data = self.get_serializer(member).data
+
+        return Response(data, status=status.HTTP_201_CREATED)
+
     def perform_destroy(self, instance):
         """Disable membership"""
         instance.is_active = False
@@ -72,7 +84,9 @@ class MembershipViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         """Assign permissions based on action"""
-        permissions = [IsAuthenticated, IsActiveCircleMember]
+        permissions = [IsAuthenticated]
+        if self.action != 'create':
+            permissions.append(IsActiveCircleMember)
         if self.action == 'invitations':
             permissions.append(IsSelfMember)
         return [permission() for permission in permissions]

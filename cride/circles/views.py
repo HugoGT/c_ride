@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from cride.circles.models import Circle, Invitation, Membership
-from cride.circles.permissions import IsCircleAdmin, IsActiveCircleMember
+from cride.circles.permissions import IsActiveCircleMember, IsCircleAdmin, IsSelfMember
 from cride.serializers import CircleModelSerializer, MembershipModelSerializer
 
 
@@ -73,6 +73,8 @@ class MembershipViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         """Assign permissions based on action"""
         permissions = [IsAuthenticated, IsActiveCircleMember]
+        if self.action == 'invitations':
+            permissions.append(IsSelfMember)
         return [permission() for permission in permissions]
 
     def get_queryset(self):

@@ -1,3 +1,3 @@
 from .circles import Circle
-from .invitations import InvitationManager
+from .invitations import Invitation
 from .memberships import Membership

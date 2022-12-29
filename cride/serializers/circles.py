@@ -37,11 +37,9 @@ class CircleModelSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Ensure both members_limit and is_limited are present"""
-        method = self.context['request'].method
-        if method == 'POST':
-            members_limit = data.get('members_limit', None)
-            is_limited = data.get('is_limited', False)
+        is_limited = data.get('is_limited', False)
+        members_limit = data.get('members_limit', None)
+
         if is_limited ^ bool(members_limit):
             raise serializers.ValidationError('If circle is limited, a members limit must be provided')
         return data
-

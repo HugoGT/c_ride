@@ -50,8 +50,9 @@ THIRD_APPS = [
     'rest_framework.authtoken',
 ]
 LOCAL_APPS = [
-    'cride.users.apps.UsersAppConfig',
     'cride.circles.apps.CirclesAppConfig',
+    'cride.rides.apps.RidesAppConfig',
+    'cride.users.apps.UsersAppConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_APPS + LOCAL_APPS
@@ -144,7 +145,7 @@ EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.s
 # Admin
 ADMIN_URL = 'admin/'
 ADMINS = [
-    ("""Pablo Trinidad""", 'pablotrinidad@ciencias.unam.mx'),
+    ("""Hugo Gomez""", 'gthugo@outlook.com'),
 ]
 MANAGERS = ADMINS
 

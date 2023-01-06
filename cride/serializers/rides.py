@@ -2,7 +2,7 @@
 
 
 from django.db import transaction
-from django.utils.timezone import now, timedelta
+from django.utils.timezone import localtime, now, timedelta
 from rest_framework import serializers
 
 from cride.circles.models import Membership
@@ -33,7 +33,7 @@ class CreateRideSerializer(serializers.ModelSerializer):
 
     def validate_departure_date(self, data):
         """Verify date is not in the past"""
-        min_date = now() + timedelta(minutes=20)
+        min_date = localtime(now()) + timedelta(minutes=20)
         if data < min_date:
             raise serializers.ValidationError(
                 'Departure time must be at least pass the next 20 minutes window.'

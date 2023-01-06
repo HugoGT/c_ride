@@ -1,7 +1,7 @@
 """Rides views"""
 
 
-from django.utils.timezone import now, timedelta
+from django.utils.timezone import localtime, now, timedelta
 from rest_framework import viewsets
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -35,7 +35,7 @@ class RideViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return active circle's rides"""
-        offset = now() + timedelta(minutes=20)
+        offset = localtime(now()) + timedelta(minutes=20)
 
         return self.circle.ride_set.filter(
             departure_date__gte=offset,

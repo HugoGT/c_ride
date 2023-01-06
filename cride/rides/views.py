@@ -10,28 +10,25 @@ from rest_framework.permissions import IsAuthenticated
 
 from cride.circles.models import Circle
 from cride.circles.permissions import IsActiveCircleMember
+from cride.rides.permissions import IsRideOwner
 from cride.serializers import CreateRideSerializer, RideModelSerializer
 
 
 class RideViewSet(viewsets.ModelViewSet):
     """Ride view set"""
 
-    permission_classes = [IsAuthenticated, IsActiveCircleMember]
     filter_backends = (SearchFilter, OrderingFilter)
     ordering = ('departure_date', 'arrival_date', 'available_seats')
     ordering_fields = ('departure_date', 'arrival_date', 'available_seats')
     search_fields = ('departure_location', 'arrival_location')
 
-    def dispatch(self, request, *args, **kwargs):
-        """Verify that the circle exists."""
-        slug_name = kwargs['slug_name']
-        self.circle = get_object_or_404(Circle, slug_name=slug_name)
+    def get_permissions(self):
+        """Assign permissions based on action"""
+        permissions = [IsAuthenticated, IsActiveCircleMember]
+        if self.action in ['update', 'partial_update']:
+            permissions.append(IsRideOwner)
 
-        return super(RideViewSet, self).dispatch(request, *args, **kwargs)
-
-    def destroy(self, request, slug_name=None):
-        """No one can delete a ride"""
-        raise MethodNotAllowed('DELETE')
+        return [permission() for permission in permissions]
 
     def get_queryset(self):
         """Return active circle's rides"""
@@ -57,3 +54,14 @@ class RideViewSet(viewsets.ModelViewSet):
         context['circle'] = self.circle
 
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        """Verify that the circle exists."""
+        slug_name = kwargs['slug_name']
+        self.circle = get_object_or_404(Circle, slug_name=slug_name)
+
+        return super(RideViewSet, self).dispatch(request, *args, **kwargs)
+
+    def destroy(self, request, slug_name=None):
+        """No one can delete a ride"""
+        raise MethodNotAllowed('DELETE')

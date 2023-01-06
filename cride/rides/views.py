@@ -27,3 +27,11 @@ class RideViewSet(viewsets.ModelViewSet):
     def destroy(self, request, slug_name=None):
         """No one can delete a ride"""
         raise MethodNotAllowed('DELETE')
+
+    def get_serializer_context(self):
+        """Add circle to serializer context."""
+
+        context = super(RideViewSet, self).get_serializer_context()
+        context['circle'] = self.circle
+
+        return context

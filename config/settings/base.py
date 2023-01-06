@@ -45,6 +45,7 @@ DJANGO_APPS = [
     'django.contrib.admin',
 ]
 THIRD_APPS = [
+    'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
 ]

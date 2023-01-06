@@ -9,6 +9,18 @@ from cride.circles.models import Membership
 from cride.rides.models import Ride
 
 
+class RideModelSerializer(serializers.ModelSerializer):
+    """Ride model serializer"""
+
+    class Meta:
+        model = Ride
+        fields = '__all__'
+        read_only_fields = (
+            'offered_by',
+            'offered_in'
+            )
+
+
 class CreateRideSerializer(serializers.ModelSerializer):
     """Create ride serializer"""
 
@@ -21,7 +33,7 @@ class CreateRideSerializer(serializers.ModelSerializer):
 
     def validate_departure_date(self, data):
         """Verify date is not in the past"""
-        min_date = now() + timedelta(seconds=1200)
+        min_date = now() + timedelta(minutes=20)
         if data < min_date:
             raise serializers.ValidationError(
                 'Departure time must be at least pass the next 20 minutes window.'

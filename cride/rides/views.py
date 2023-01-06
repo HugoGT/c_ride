@@ -1,21 +1,26 @@
 """Rides views"""
 
 
+from django.utils.timezone import now, timedelta
 from rest_framework import viewsets
 from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 
 from cride.circles.models import Circle
 from cride.circles.permissions import IsActiveCircleMember
-from cride.serializers import CreateRideSerializer
+from cride.serializers import CreateRideSerializer, RideModelSerializer
 
 
 class RideViewSet(viewsets.ModelViewSet):
     """Ride view set"""
 
-    serializer_class = CreateRideSerializer
     permission_classes = [IsAuthenticated, IsActiveCircleMember]
+    filter_backends = (SearchFilter, OrderingFilter)
+    ordering = ('departure_date', 'arrival_date', 'available_seats')
+    ordering_fields = ('departure_date', 'arrival_date', 'available_seats')
+    search_fields = ('departure_location', 'arrival_location')
 
     def dispatch(self, request, *args, **kwargs):
         """Verify that the circle exists."""
@@ -27,6 +32,23 @@ class RideViewSet(viewsets.ModelViewSet):
     def destroy(self, request, slug_name=None):
         """No one can delete a ride"""
         raise MethodNotAllowed('DELETE')
+
+    def get_queryset(self):
+        """Return active circle's rides"""
+        offset = now() + timedelta(minutes=20)
+
+        return self.circle.ride_set.filter(
+            departure_date__gte=offset,
+            is_active=True,
+            available_seats__gte=1
+        )
+
+    def get_serializer_class(self):
+        """Return serializer based on action"""
+        if self.action == 'create':
+            return CreateRideSerializer
+
+        return RideModelSerializer
 
     def get_serializer_context(self):
         """Add circle to serializer context."""

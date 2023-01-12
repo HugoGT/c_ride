@@ -2,16 +2,18 @@
 
 
 from django.utils.timezone import localtime, now, timedelta
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from cride.circles.models import Circle
 from cride.circles.permissions import IsActiveCircleMember
 from cride.rides.permissions import IsRideOwner
-from cride.serializers import CreateRideSerializer, RideModelSerializer
+from cride.serializers import CreateRideSerializer, RideModelSerializer, JoinRideSerializer
 
 
 class RideViewSet(viewsets.ModelViewSet):
@@ -44,6 +46,8 @@ class RideViewSet(viewsets.ModelViewSet):
         """Return serializer based on action"""
         if self.action == 'create':
             return CreateRideSerializer
+        if self.action == 'update':
+            return JoinRideSerializer
 
         return RideModelSerializer
 
@@ -65,3 +69,19 @@ class RideViewSet(viewsets.ModelViewSet):
     def destroy(self, request, slug_name=None):
         """No one can delete a ride"""
         raise MethodNotAllowed('DELETE')
+
+    @action(detail=True, methods=['post'])
+    def join(self, request, *args, **kwargs):
+        """Add requesting user to ride"""
+        ride = self.get_object()
+        serializer = JoinRideSerializer(
+            ride,
+            data={'passenger': request.user.pk},
+            context={'ride': ride, 'circle': self.circle},
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        ride = serializer.save()
+        data = RideModelSerializer(ride).data
+
+        return Response(data, status=status.HTTP_200_OK)

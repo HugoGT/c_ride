@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from cride.circles.models import Circle
 from cride.circles.permissions import IsActiveCircleMember
 from cride.rides.permissions import IsRideOwner, IsNotRideOwner
-from cride.serializers import CreateRideSerializer, RideModelSerializer, JoinRideSerializer, EndRideSerializer
+from cride.serializers import CreateRideSerializer, CreateRideRatingSerializer, RideModelSerializer, JoinRideSerializer, EndRideSerializer
 
 
 class RideViewSet(viewsets.ModelViewSet):
@@ -54,6 +54,8 @@ class RideViewSet(viewsets.ModelViewSet):
             return JoinRideSerializer
         if self.action == 'finish':
             return EndRideSerializer
+        if self.action == 'rate':
+            return CreateRideRatingSerializer
 
         return RideModelSerializer
 
@@ -109,3 +111,17 @@ class RideViewSet(viewsets.ModelViewSet):
         data = RideModelSerializer(ride).data
 
         return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'])
+    def rate(self, request, *args, **kwargs):
+        """Rate ride."""
+        ride = self.get_object()
+        serializer_class = self.get_serializer_class()
+        context = self.get_serializer_context()
+        context['ride'] = ride
+        serializer = serializer_class(data=request.data, context=context)
+        serializer.is_valid(raise_exception=True)
+        ride = serializer.save()
+        data = RideModelSerializer(ride).data
+
+        return Response(data, status=status.HTTP_201_CREATED)

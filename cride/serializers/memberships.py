@@ -1,7 +1,7 @@
 """Membership serializers"""
 
 
-from django.utils.timezone import now
+from django.utils.timezone import localtime, now
 from rest_framework import serializers
 
 from cride.circles.models import Membership, Invitation
@@ -82,7 +82,7 @@ class AddMemberSerializer(serializers.Serializer):
         circle = self.context['circle']
         user = data['user']
 
-        time = now()
+        time = localtime(now())
 
         # Member creation
         member = Membership.objects.create(

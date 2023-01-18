@@ -136,7 +136,7 @@ class JoinRideSerializer(serializers.ModelSerializer):
     def validate(self, data):
         """Verify rides allow new passengers"""
         ride = self.context['ride']
-        if ride.departure_date <= now():
+        if ride.departure_date <= localtime(now()):
             raise serializers.ValidationError("You can't join this ride now.")
 
         if ride.available_seats < 1:
@@ -157,15 +157,37 @@ class JoinRideSerializer(serializers.ModelSerializer):
 
         with transaction.atomic():
             ride.passengers.add(user)
+            ride.availiable_seats -= 1
+            ride.save()
 
             #Profile
             profile.rides_taken += 1
             profile.save()
+
             #Membreship
             member.rides_taken += 1
             member.save()
+
             #Circle
             circle.rides_taken += 1
             circle.save()
 
             return ride
+
+
+class EndRideSerializer(serializers.ModelSerializer):
+    """End ride serializer"""
+
+    current_time = serializers.DateTimeField()
+
+    class Meta:
+        model = Ride
+        fields = ('is_active', 'current_time')
+
+    def validate_current_time(self, data):
+        """Verify ride have indeed started"""
+        ride = self.context['view'].get_object()
+        if ride.departure_date >= data:
+            raise serializers.ValidationError('Ride has not started yet.')
+
+        return data

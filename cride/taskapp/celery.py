@@ -12,10 +12,8 @@ if not settings.configured:
 
 
 app = Celery('cride')
-# Using a string here means the worker will not have to
-# pickle the object when using Windows.
-# - namespace='CELERY' means all celery-related configuration keys
-#   should have a `CELERY_` prefix.
+# Using a string here means the worker will not have to pickle the object when using Windows.
+# - namespace='CELERY' means all celery-related configuration keys should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 

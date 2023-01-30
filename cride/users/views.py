@@ -23,8 +23,9 @@ class UserViewSet(
     viewsets.GenericViewSet,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin
-    ):
-    """User view set
+):
+    """
+    User view set
 
     Handle user details. A user can only see his own details.
     """
@@ -74,6 +75,7 @@ class UserViewSet(
         data = UserModelSerializer(user).data
 
         return Response(data)
+
 
 class AuthViewSet(viewsets.GenericViewSet):
     """Auth view set

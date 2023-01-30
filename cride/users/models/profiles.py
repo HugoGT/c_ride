@@ -20,12 +20,12 @@ class Profile(CRideModel):
         blank=True,
         null=True,
     )
-    biography = models.TextField (
+    biography = models.TextField(
         max_length=500,
         blank=True,
     )
 
-    #Stats
+    # Stats
     rides_taken = models.PositiveIntegerField(default=0)
     rides_offered = models.PositiveIntegerField(default=0)
     reputation = models.FloatField(

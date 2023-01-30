@@ -102,7 +102,7 @@ class RideViewSet(viewsets.ModelViewSet):
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(
             ride,
-            data = {'is_active': False, 'current_time': localtime(now())},
+            data={'is_active': False, 'current_time': localtime(now())},
             context=self.get_serializer_context(),
             partial=True
         )

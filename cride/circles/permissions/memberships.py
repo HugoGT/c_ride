@@ -2,7 +2,7 @@
 
 from rest_framework.permissions import BasePermission
 
-from cride.circles.models import Invitation, Membership
+from cride.circles.models import Membership
 
 
 class IsActiveCircleMember(BasePermission):

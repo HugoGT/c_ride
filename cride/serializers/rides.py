@@ -160,15 +160,15 @@ class JoinRideSerializer(serializers.ModelSerializer):
             ride.availiable_seats -= 1
             ride.save()
 
-            #Profile
+            # Profile
             profile.rides_taken += 1
             profile.save()
 
-            #Membreship
+            # Membreship
             member.rides_taken += 1
             member.save()
 
-            #Circle
+            # Circle
             circle.rides_taken += 1
             circle.save()
 

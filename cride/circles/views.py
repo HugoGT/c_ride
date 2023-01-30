@@ -27,7 +27,6 @@ class CircleViewSet(viewsets.ModelViewSet):
     ordering = ('-members__count', '-rides_offered', '-rides_taken')
     filter_fields = ('verified', 'is_limited')
 
-
     def get_queryset(self):
         """Only lists public circles"""
         queryset = Circle.objects.all()
@@ -54,7 +53,7 @@ class CircleViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         """Assign permissionss based on action"""
-        if self.action is 'get':
+        if self.action == 'get':
             return []
         permissions = [IsAuthenticated]
         if self.action in ['update', 'partial_update']:

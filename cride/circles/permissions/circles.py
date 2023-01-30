@@ -13,10 +13,10 @@ class IsCircleAdmin(BasePermission):
         """Verify the user have a membership in the obj"""
         try:
             Membership.objects.get(
-            user=request.user,
-            circle=obj,
-            is_admin=True,
-            is_active=True
+                user=request.user,
+                circle=obj,
+                is_admin=True,
+                is_active=True
             )
 
         except Membership.DoesNotExist:

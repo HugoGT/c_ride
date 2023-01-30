@@ -24,7 +24,7 @@ class Circle(CRideModel):
         through_fields=('circle', 'user')
     )
 
-    #Stats
+    # Stats
     rides_taken = models.PositiveIntegerField(default=0)
     rides_offered = models.PositiveIntegerField(default=0)
 

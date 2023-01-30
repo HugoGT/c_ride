@@ -28,7 +28,7 @@ class User(CRideModel, AbstractUser):
     phone_number = models.CharField(
         'phone number',
         validators=[phone_regex],
-        max_length = 16,
+        max_length=16,
         unique=True,
         blank=True,
     )

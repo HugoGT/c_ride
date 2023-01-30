@@ -9,13 +9,13 @@ from django.contrib import admin
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    #Circles views
+    # Circles views
     path('', include(('cride.circles.urls', 'circles'), namespace='circles')),
 
-    #Rides views
+    # Rides views
     path('', include(('cride.rides.urls', 'rides'), namespace='rides')),
 
-    #Users views
+    # Users views
     path('', include(('cride.users.urls', 'users'), namespace='users')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

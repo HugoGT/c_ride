@@ -13,7 +13,6 @@ class CircleAdmin(admin.ModelAdmin):
     list_display = (
         'offered_by',
         'offered_in',
-        'passengers',
         'departure_location',
         'arrival_location'
     )

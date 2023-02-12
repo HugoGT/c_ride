@@ -1,0 +1,764 @@
+{
+	"info": {
+		"_postman_id": "e841622c-e89f-4754-9baa-3127ca8f3f94",
+		"name": "CRide",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22979768"
+	},
+	"item": [
+		{
+			"name": "Circles",
+			"item": [
+				{
+					"name": "Create circle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test\",\n    \"slug_name\": \"test\",\n    \"about\": \"El grupo de pruebas\",\n    \"is_public\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/circles/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List circles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve circle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update circle",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Groups Test\",\n    \"slug_name\": \"test\",\n    \"about\": \"El grupo de testing\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/circles/test/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch circle",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/circles/test/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete circle",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/platziperu/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"platziperu",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Memberships",
+			"item": [
+				{
+					"name": "Detail circle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List circle members",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test/members",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve a circle member",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test/members/hugo",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"members",
+								"hugo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate Member",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test/members/hugo/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"members",
+								"hugo",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List invitations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test/members/hugo/invitations",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"members",
+								"hugo",
+								"invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invite a new member",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "headerPrefix",
+									"value": "Token",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "fb306f1a5b5017d6a9b1bed29de08542a2cb613b",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "test",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"invitation_code\": \"3UQ2HMZAHF\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/circles/test/members/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"members",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rides",
+			"item": [
+				{
+					"name": "List rides",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}} /circles/test/rides/",
+							"host": [
+								"{{host}} "
+							],
+							"path": [
+								"circles",
+								"test",
+								"rides",
+								""
+							],
+							"query": [
+								{
+									"key": "ordering",
+									"value": "-available_seats",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create ride",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"available_seats\": 6,\n    \"departure_location\": \"Orizaba 26, Plaza Norte\",\n    \"departure_date\": \"2023-01-18T17:30:00-06:00\",\n    \"arrival_location\": \"Surco, Lima\",\n    \"arrival_date\": \"2023-01-27T18:30:00-06:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/circles/test/rides/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"rides",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partial update a ride",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"departure_location\": \"satelite\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/circles/test/rides/4/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"rides",
+								"4",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a ride",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test/rides/4/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"rides",
+								"4",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join a ride",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test/rides/1/join/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"rides",
+								"1",
+								"join",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Finish a ride",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/circles/test/rides/8/finish/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"rides",
+								"8",
+								"finish",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rate a ride",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/circles/test/rides/2/rate/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"circles",
+								"test",
+								"rides",
+								"2",
+								"rate",
+								""
+							],
+							"query": [
+								{
+									"key": "\"rating\"",
+									"value": "5",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Retrieve user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/users/hugo",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"hugo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"paku@my24.io\",\n    \"username\": \"hugo3\",\n    \"password\": \"hello223\",\n    \"password_confirmation\": \"hello223\",\n    \"last_name\": \"Gomez\",\n    \"first_name\": \"Hugo\",\n    \"phone_number\": \"219023324802\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/signup/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"signup",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"paku@my.io\",\n    \"password\": \"hello223\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"307d6626b9dc1c92c7338fe61ecfa9a5ae6f45e4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/verify/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"verify",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"paku@my.io\",\n    \"username\": \"hugo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/hugo/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"hugo",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User partial update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_number\": \"523939135303\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/hugo/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"hugo",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/home/hugo/Desktop/programación/curso-acessibilidad-web/images/linkedin.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/users/hugo/profile/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"hugo",
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile partial update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"biography\": \"Hola, soy Hugo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/users/hugo/profile/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"hugo",
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "headerPrefix",
+				"value": "Token",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
